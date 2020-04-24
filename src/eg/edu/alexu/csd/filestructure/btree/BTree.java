@@ -20,6 +20,8 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
     }
     //for test
     public void Travers(IBTreeNode<K, V> node){
+        if(node == null)
+            return;
         List<IBTreeNode<K, V>> children = node.getChildren();
         List<K> keys = node.getKeys();
         List<V> values = node.getValues();
