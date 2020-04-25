@@ -9,13 +9,15 @@ public class BTreeNode<K extends Comparable<K>, V> implements IBTreeNode<K, V> {
     private List<IBTreeNode<K, V>> children;
     private int numOfKeys;
     private boolean leaf;
-    public BTreeNode(boolean isLeaf){
-        numOfKeys=0;
-        leaf=isLeaf;
-        keys=new ArrayList<>();
-        values=new ArrayList<>();
-        children=new ArrayList<>();
+
+    public BTreeNode(boolean isLeaf) {
+        numOfKeys = 0;
+        leaf = isLeaf;
+        keys = new ArrayList<>();
+        values = new ArrayList<>();
+        children = new ArrayList<>();
     }
+
     @Override
     public int getNumOfKeys() {
         return numOfKeys;
@@ -23,7 +25,7 @@ public class BTreeNode<K extends Comparable<K>, V> implements IBTreeNode<K, V> {
 
     @Override
     public void setNumOfKeys(int numOfKeys) {
-        this.numOfKeys=numOfKeys;
+        this.numOfKeys = numOfKeys;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class BTreeNode<K extends Comparable<K>, V> implements IBTreeNode<K, V> {
 
     @Override
     public void setLeaf(boolean isLeaf) {
-        leaf=isLeaf;
+        leaf = isLeaf;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class BTreeNode<K extends Comparable<K>, V> implements IBTreeNode<K, V> {
 
     @Override
     public void setKeys(List<K> keys) {
-        this.keys= keys;
+        this.keys = keys;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class BTreeNode<K extends Comparable<K>, V> implements IBTreeNode<K, V> {
 
     @Override
     public void setValues(List<V> values) {
-        this.values=values;
+        this.values = values;
     }
 
     @Override
@@ -63,6 +65,6 @@ public class BTreeNode<K extends Comparable<K>, V> implements IBTreeNode<K, V> {
 
     @Override
     public void setChildren(List<IBTreeNode<K, V>> children) {
-        this.children=children;
+        this.children = children;
     }
 }

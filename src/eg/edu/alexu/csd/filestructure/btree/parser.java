@@ -12,16 +12,15 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
 public class parser {
 
-    public ArrayList<Pair<String, String>> parse(String fileName) throws ParserConfigurationException, IOException, SAXException {
+    public ArrayList<Pair<String, String>> parse(String filePath) throws ParserConfigurationException, IOException, SAXException {
         ArrayList<Pair<String, String>> content = new ArrayList<>();
-        File xmlFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getFile());
+        File xmlFile = new File(filePath);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = factory.newDocumentBuilder();
         Document doc = dBuilder.parse(xmlFile);
@@ -31,8 +30,8 @@ public class parser {
             Node nNode = nList.item(i);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element elem = (Element) nNode;
-                String id = elem.getAttribute("id"), text = nNode.getTextContent();
-                content.add(new Pair<>(id, text));
+                String id = elem.getAttribute("id");
+                content.add(new Pair<>(id, filePath));
             }
         }
         return content;
