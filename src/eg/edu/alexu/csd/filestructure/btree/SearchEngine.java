@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchEngine implements ISearchEngine {
-    int n;
-    IBTree<String, String> engine = new BTree<>(n);
-    parser DOMParser = new parser();
-    ArrayList<Pair<String, String>> document = new ArrayList<>();
+    private int n;
+    private IBTree<String, String> engine;
+    private parser DOMParser;
+    private ArrayList<Pair<String, String>> document;
 
     public SearchEngine(int n){
         this.n = n;
+        engine = new BTree<>(n);
+        DOMParser = new parser();
+        document = new ArrayList<>();
     }
 
     @Override
