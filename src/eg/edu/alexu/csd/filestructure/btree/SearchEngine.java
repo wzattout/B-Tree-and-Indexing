@@ -3,6 +3,7 @@ package eg.edu.alexu.csd.filestructure.btree;
 import javafx.util.Pair;
 import org.xml.sax.SAXException;
 
+import javax.management.RuntimeErrorException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
@@ -10,16 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchEngine implements ISearchEngine {
-    IBTree<String, String> engine = new BTree<>(64);
+    int n;
+    IBTree<String, String> engine = new BTree<>(n);
     parser DOMParser = new parser();
     ArrayList<Pair<String, String>> document = new ArrayList<>();
 
+    public SearchEngine(int n){
+        this.n = n;
+    }
+
     @Override
     public void indexWebPage(String filePath) {
+        if (filePath == null)
+            throw new RuntimeErrorException(new Error());
         try {
             document = DOMParser.parse(filePath);
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
+            throw new RuntimeErrorException(new Error());
         }
         for (Pair<String, String> stringStringPair : document) {
             engine.insert(stringStringPair.getKey(), stringStringPair.getValue());
@@ -28,6 +36,8 @@ public class SearchEngine implements ISearchEngine {
 
     @Override
     public void indexDirectory(String directoryPath) {
+        if (directoryPath == null)
+            throw new RuntimeErrorException(new Error());
         File dir = new File(directoryPath);
         File[] firstLevelFiles = dir.listFiles();
         if (firstLevelFiles != null && firstLevelFiles.length > 0) {
@@ -38,15 +48,19 @@ public class SearchEngine implements ISearchEngine {
                     indexWebPage(aFile.getPath());
                 }
             }
+        }else {
+            indexWebPage(directoryPath);
         }
     }
 
     @Override
     public void deleteWebPage(String filePath) {
+        if (filePath == null)
+            throw new RuntimeErrorException(new Error());
         try {
             document = DOMParser.parse(filePath);
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
+            throw new RuntimeErrorException(new Error());
         }
         for (Pair<String, String> stringStringPair : document) {
             engine.delete(stringStringPair.getKey());
@@ -74,11 +88,11 @@ public class SearchEngine implements ISearchEngine {
             }
         }
         return count;
-    }
+    }*/
 
     public static void main(String[] args) {
-        ISearchEngine x = new SearchEngine();
-        x.indexDirectory("C:\\Users\\wzatt\\Documents\\Programming\\JAVA\\CSED\\Y2_T2\\Lab3\\B-Tree-and-Indexing\\Wikipedia-Data-Sample");
-        x.deleteWebPage("C:\\Users\\wzatt\\Documents\\Programming\\JAVA\\CSED\\Y2_T2\\Lab3\\B-Tree-and-Indexing\\Wikipedia-Data-Sample\\wiki_00.xml");
-    }*/
+        ISearchEngine x = new SearchEngine(64);
+        x.indexDirectory("res\\wiki_00");
+        x.deleteWebPage("C:\\Users\\wzatt\\Documents\\Programming\\JAVA\\CSED\\Y2_T2\\Lab3\\B-Tree-and-Indexing\\Wikipedia-Data-Sample\\wiki_00");
+    }
 }
