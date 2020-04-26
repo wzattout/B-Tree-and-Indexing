@@ -1,12 +1,17 @@
 package eg.edu.alexu.csd.filestructure.btree;
 
+import javafx.util.Pair;
+
+import javax.management.RuntimeErrorException;
 import java.util.List;
 
 public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
-    int t;
-    IBTreeNode<K, V> root;
+    private int t;
+    private IBTreeNode<K, V> root;
 
     public BTree(int t) {
+        if(t<2)
+            throw new RuntimeErrorException(new Error("t value less than 2"));
         this.t = t;
     }
 
@@ -39,7 +44,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
     @Override
     public void insert(K key, V value) {
         if (key == null || value == null)
-            throw new RuntimeException("insertion with null key or value");
+            throw new RuntimeErrorException(new Error("insertion with null key or value"));
 
         //if tree is empty create root as leaf node
         if (root == null)
@@ -90,7 +95,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
     @Override
     public V search(K key) {
         if (key == null)
-            throw new RuntimeException("search with null key");
+            throw new RuntimeErrorException(new Error("search with null key"));
         IBTreeNode<K, V> node = root;
         while (node != null) {
             List<K> keys = node.getKeys();
@@ -112,7 +117,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
     @Override
     public boolean delete(K key) {
         if (key == null)
-            throw new RuntimeException("deletion with null key");
+            throw new RuntimeErrorException(new Error("deletion with null key"));
 
         //if tree is empty return false
         if (root == null)
@@ -191,21 +196,23 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 
 
             if (!isMinimum(left)) {
+                Pair<K,V> successor = getSuccessor(left);
                 //adjust parent ( node )
                 parentKeys.remove(i);
                 parentValues.remove(i);
-                parentKeys.add(i, leftKeys.get(leftKeys.size() - 1));
-                parentValues.add(i, leftValues.get(leftValues.size() - 1));
+                parentKeys.add(i, successor.getKey());
+                parentValues.add(i, successor.getValue());
                 //delete the moved key from left recursively
-                deleteAtRoot(leftKeys.get(leftKeys.size() - 1), left);
+                deleteAtRoot(successor.getKey(), left);
             } else if (!isMinimum(right)) {
+                Pair<K,V> predecessor=getPredecessor(right);
                 //adjust parent ( node )
                 parentKeys.remove(i);
                 parentValues.remove(i);
-                parentKeys.add(i, rightKeys.get(0));
-                parentValues.add(i, rightValues.get(0));
+                parentKeys.add(i, predecessor.getKey());
+                parentValues.add(i, predecessor.getValue());
                 //delete the moved key from right recursively
-                deleteAtRoot(rightKeys.get(0), right);
+                deleteAtRoot(predecessor.getKey(), right);
             } else {
                 //merge left and right
                 merge(node, i);
@@ -215,7 +222,17 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
         }
         return true;
     }
-
+    private Pair<K,V> getPredecessor(IBTreeNode<K, V> node){
+        if(node.isLeaf())
+            return new Pair<>(node.getKeys().get(0),node.getValues().get(0));
+        return getPredecessor(node.getChildren().get(0));
+    }
+    private Pair<K,V> getSuccessor(IBTreeNode<K, V> node){
+        int siz=node.getNumOfKeys();
+        if(node.isLeaf())
+            return new Pair<>(node.getKeys().get(siz-1),node.getValues().get(siz-1));
+        return getSuccessor(node.getChildren().get(siz));
+    }
     private void fromRightToLeft(IBTreeNode<K, V> parent, int i) {
         IBTreeNode<K, V> left = parent.getChildren().get(i);
         IBTreeNode<K, V> right = parent.getChildren().get(i + 1);
