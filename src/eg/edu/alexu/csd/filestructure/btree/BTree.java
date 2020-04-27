@@ -10,7 +10,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
     private IBTreeNode<K, V> root;
 
     public BTree(int t) {
-        if(t<2)
+        if (t < 2)
             throw new RuntimeErrorException(new Error("t value less than 2"));
         this.t = t;
     }
@@ -196,7 +196,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 
 
             if (!isMinimum(left)) {
-                Pair<K,V> successor = getSuccessor(left);
+                Pair<K, V> successor = getSuccessor(left);
                 //adjust parent ( node )
                 parentKeys.remove(i);
                 parentValues.remove(i);
@@ -205,7 +205,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
                 //delete the moved key from left recursively
                 deleteAtRoot(successor.getKey(), left);
             } else if (!isMinimum(right)) {
-                Pair<K,V> predecessor=getPredecessor(right);
+                Pair<K, V> predecessor = getPredecessor(right);
                 //adjust parent ( node )
                 parentKeys.remove(i);
                 parentValues.remove(i);
@@ -222,17 +222,20 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
         }
         return true;
     }
-    private Pair<K,V> getPredecessor(IBTreeNode<K, V> node){
-        if(node.isLeaf())
-            return new Pair<>(node.getKeys().get(0),node.getValues().get(0));
+
+    private Pair<K, V> getPredecessor(IBTreeNode<K, V> node) {
+        if (node.isLeaf())
+            return new Pair<>(node.getKeys().get(0), node.getValues().get(0));
         return getPredecessor(node.getChildren().get(0));
     }
-    private Pair<K,V> getSuccessor(IBTreeNode<K, V> node){
-        int siz=node.getNumOfKeys();
-        if(node.isLeaf())
-            return new Pair<>(node.getKeys().get(siz-1),node.getValues().get(siz-1));
+
+    private Pair<K, V> getSuccessor(IBTreeNode<K, V> node) {
+        int siz = node.getNumOfKeys();
+        if (node.isLeaf())
+            return new Pair<>(node.getKeys().get(siz - 1), node.getValues().get(siz - 1));
         return getSuccessor(node.getChildren().get(siz));
     }
+
     private void fromRightToLeft(IBTreeNode<K, V> parent, int i) {
         IBTreeNode<K, V> left = parent.getChildren().get(i);
         IBTreeNode<K, V> right = parent.getChildren().get(i + 1);
