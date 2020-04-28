@@ -758,8 +758,8 @@ public class UnitTest {
 		 */
 		try {
 			searchEngine.indexWebPage("res\\wiki_00");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 8)});
-			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("THISISTESTWord");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 3)});
+			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("MinOltA");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}
@@ -825,8 +825,8 @@ public class UnitTest {
 		 */
 		try {
 			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7702780", 3), new SearchResult("7697611", 8)});
-			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("THISISTESTWord");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7743810", 1), new SearchResult("7700240", 1), new SearchResult("7737486", 1), new SearchResult("7712158", 1), new SearchResult("7697800", 1), new SearchResult("7743816", 1), new SearchResult("7712070", 2)});
+			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("flyweIghT");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}
@@ -865,8 +865,8 @@ public class UnitTest {
 		 */
 		try {
 			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7712144", 1), new SearchResult("7708196", 2)});
-			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("THISIStESTWORDFORSUBFOLDER");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7710308", 1)});
+			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("NONVOCATIVE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}
@@ -932,8 +932,8 @@ public class UnitTest {
 		try {
 			searchEngine.indexDirectory("res");
 			searchEngine.deleteWebPage("res\\wiki_00");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7702780", 1)});
-			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("DELETEWORD");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7732307", 1), new SearchResult("7712754", 1), new SearchResult("7715212", 1), new SearchResult("7740623", 1), new SearchResult("7741802", 1), new SearchResult("7728202", 1), new SearchResult("7737649", 2), new SearchResult("7720239", 2)});
+			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("documentation");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}
@@ -972,8 +972,8 @@ public class UnitTest {
 			searchEngine.indexWebPage("res\\wiki_00");
 			searchEngine.indexWebPage("res\\subfolder\\wiki_02");
 			searchEngine.deleteWebPage("res\\wiki_01");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697611", 1)});
-			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("testDeleteWebPageUnIndexedWebPage");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7698739", 1), new SearchResult("7712061", 2)});
+			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("diScoGrapHy");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}
@@ -1076,8 +1076,8 @@ public class UnitTest {
 		 */
 		try {
 			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7702780", 1), new SearchResult("7697611", 3)});
-			List<ISearchResult> actual = searchEngine.searchByMultipleWordWithRanking(" word1d word2d     word3d 	");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7702780", 1), new SearchResult("7712754", 1)});
+			List<ISearchResult> actual = searchEngine.searchByMultipleWordWithRanking(" addressing computer     path 	");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}

@@ -30,7 +30,7 @@ public class parser {
                 Element elem = (Element) nNode;
                 int id = Integer.parseInt(elem.getAttribute("id"));
                 String text = nNode.getTextContent();
-                String[] words = text.split("[ \n,]");
+                String[] words = text.split("[ \n,\t]");
                 for (String word : words) {
                     if (!word.equals(""))
                         content.add(new Pair<>(word.toLowerCase(), id));

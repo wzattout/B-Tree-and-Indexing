@@ -7,10 +7,7 @@ import javax.management.RuntimeErrorException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SearchEngine implements ISearchEngine {
     private IBTree<String, HashMap<Integer, Integer>> engine;
@@ -116,22 +113,36 @@ public class SearchEngine implements ISearchEngine {
         if (sentence == null)
             throw new RuntimeErrorException(new Error());
         List<ISearchResult> result = new ArrayList<>();
-        String[] words = sentence.split("[ ]");
-        boolean end;
+        String[] words = sentence.split("[ \t]");
         for (String word : words) {
+            Collections.sort(result, Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
+            if (word.length() <= 0)
+                continue;
             List<ISearchResult> temp = searchByWordWithRanking(word);
-            for (ISearchResult x : temp) {
-                end = false;
-                for (ISearchResult y : result) {
-                    if (x.getId().equals(y.getId())) {
-                        y.setRank(Math.min(y.getRank(), x.getRank()));
-                        end = true;
-                        break;
-                    }
-                }
-                if (!end)
-                    result.add(x);
+            Collections.sort(temp, Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
+            if (temp.size() == 0) {
+                result.clear();
+                break;
             }
+            int i = 0, j = 0;
+            for (; i < result.size() && j < temp.size();){
+                if (Integer.parseInt(temp.get(j).getId()) < Integer.parseInt(result.get(i).getId())){
+                    j++;
+                }else if (Integer.parseInt(temp.get(j).getId()) > Integer.parseInt(result.get(i).getId())){
+                    result.remove(i);
+                }else {
+                    ISearchResult x = new SearchResult("", 0);
+                    x = result.get(i);
+                    x.setRank(Math.min(result.get(i).getRank(), temp.get(j).getRank()));
+                    result.remove(i);
+                    result.add(i, x);
+                    i++; j++;
+                }
+            }
+            while (i < result.size())
+                result.remove(i);
+            if (result.size() == 0)
+                result.addAll(temp);
         }
         return result;
     }
@@ -147,12 +158,13 @@ public class SearchEngine implements ISearchEngine {
     }
 
     /*public static void main(String[] args) {
-        ISearchEngine x = new SearchEngine(3);
-        x.indexDirectory("res\\test");
+        ISearchEngine x = new SearchEngine(50);
+        //x.indexDirectory("res\\test");
+        x.indexDirectory("res\\wiki_01");
         x.indexDirectory("res\\test2");
         x.deleteWebPage("res\\test2");
         x.deleteWebPage("res\\test");
-        ArrayList<ISearchResult> y = (ArrayList<ISearchResult>) x.searchByMultipleWordWithRanking("WalId zaTtout");
+        ArrayList<ISearchResult> y = (ArrayList<ISearchResult>) x.searchByMultipleWordWithRanking("addressing path computer");
         for (ISearchResult iSearchResult : y) {
             System.out.println(iSearchResult.getId() + "\n" + iSearchResult.getRank() + "\n" + "---------");
         }
