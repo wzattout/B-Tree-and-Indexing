@@ -14,8 +14,8 @@ public class SearchEngine implements ISearchEngine {
     private parser DOMParser;
     private ArrayList<Pair<String, Integer>> document;
 
-    public SearchEngine(int n) {
-        engine = new BTree<>(n);
+    public SearchEngine(int t) {
+        engine = new BTree<>(t);
         DOMParser = new parser();
         document = new ArrayList<>();
     }
